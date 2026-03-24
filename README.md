@@ -1,12 +1,16 @@
-# Solar-Powered Wireless Robot with Autonomous Collision Avoidance
+# Wireless Robot with Autonomous Collision Avoidance and Solar Charging
 
 A self-directed hardware and firmware project built to demonstrate hands-on skills in power systems, embedded programming, and wireless communication. The robot is remotely controlled via a custom joystick controller and automatically stops when it detects an obstacle in its path.
+
+## Demo
+
+https://github.com/user-attachments/assets/82d3c578-20b4-4a7f-a8ce-f67f73e317a3
 
 ---
 
 ## Features
 
-- **Solar rechargeable** — 6V/3W solar panel charges a 2S Li-ion battery pack via a CC/CV boost charging module
+- **Solar rechargeable** — 6V/3W solar panel charges the 2S Li-ion battery pack via a CC/CV boost charging module when the robot is parked
 - **Wireless control** — ESP-NOW protocol between two ESP32 microcontrollers for low-latency, WiFi-independent communication
 - **Autonomous collision avoidance** — HC-SR04 ultrasonic sensor overrides forward movement when an obstacle is detected within 20cm
 - **Dual power rails** — motor power and logic power are separated to prevent electrical noise from affecting the ESP32
@@ -24,7 +28,7 @@ A self-directed hardware and firmware project built to demonstrate hands-on skil
 | LM2596 Buck Converter | Steps 7.4V battery down to 5V for ESP32 and logic |
 | 2S Li-ion Battery Pack (7.4V) | Main power source |
 | Multi-cell 2S CC/CV Charger Module | Charges battery from solar panel at correct 8.4V cutoff |
-| 6V 3W Solar Panel (145×145mm) | Mounted as roof on standoffs, charges battery |
+| 6V 3W Solar Panel (145×145mm) | External solar charger — connects to CC/CV module to recharge battery |
 | HC-SR04 Ultrasonic Sensor | Measures distance for collision avoidance |
 | 2WD Acrylic Chassis | Robot platform with 2 DC gear motors and caster wheel |
 
@@ -51,6 +55,8 @@ CC/CV 2S Charger Module
                                     ├── ESP32 (logic)
                                     └── HC-SR04 (sensor)
 ```
+
+The solar panel is used to recharge the battery when the robot is not in use — the CC/CV charger module boosts the panel's 6V output to the correct 8.4V charging voltage for the 2S pack.
 
 Key design decisions:
 - **Buck converter over linear regulator** — significantly more efficient, less heat, better for battery life
@@ -134,8 +140,8 @@ See `robot_code/robot_code.ino` and `controller_code/controller_code.ino` for fu
 - All wiring uses 22 AWG silicone wire
 - JST-PH connector used for battery connection
 - Jumper wires used for ESP32 ↔ TB6612 and ESP32 ↔ HC-SR04 connections
-- Solar panel mounted on M3 standoffs above the chassis deck
 - HC-SR04 mounted at front of chassis on included bracket
+- ESP32 is powered via a USB power bank during operation — this avoids a voltage conflict between the buck converter 5V rail and the ESP32's onboard USB 5V rail, which caused instability when both were connected simultaneously
 
 ---
 
